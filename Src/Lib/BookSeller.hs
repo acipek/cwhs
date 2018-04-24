@@ -12,8 +12,8 @@ nb :: Stock -> Int
 nb (Stock _ n) = n
 
 stocklist :: [Stock] -> [Char] -> [(Char, Int)]
-stocklist [] _            = []
-stocklist _ []            = []
+stocklist [] _     = []
+stocklist _ []     = []
 stocklist l (x:cs) = [(x, count l x)] ++ stocklist l cs
 
 count :: [Stock] -> Char -> Int
@@ -25,4 +25,10 @@ count (t:st) x =
        then n + count st x
        else count st x
 
-stock = [Stock "ABAR" 200, Stock "CDXE" 500, Stock "BKWR" 250, Stock "BTSQ" 890, Stock "DRTY" 600]
+stock =
+  [ Stock "ABAR" 200
+  , Stock "CDXE" 500
+  , Stock "BKWR" 250
+  , Stock "BTSQ" 890
+  , Stock "DRTY" 600
+  ]

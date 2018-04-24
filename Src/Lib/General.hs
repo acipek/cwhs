@@ -142,10 +142,32 @@ arithmetic a b Divide = a / b
 arithmetic a b Multiply = a * b
 arithmetic a b Subtract = a - b
 
+-- Reverse or Rotate
+-- The input is a string str of digits. Cut the string into chunks (a chunk here is a substring of the initial string) of size sz (ignore the last chunk if its size is less than sz).
+
+-- If a chunk represents an integer such as the sum of the cubes of its digits is divisible by 2, reverse that chunk; otherwise rotate it to the left by one position. Put together these modified chunks and return the result as a string.
+
+revRot :: [Char] -> Int -> [Char]
+revRot strng sz | sz <= 0 = ""
+                | strng == "" = ""
+                | sz > length strng = ""
+                | otherwise = helper (take sz strng) ++ revRot (drop sz strng) sz
 
 
+helper :: [Char] -> [Char]
+helper x = if (foldr (\t acc -> acc + (digitToInt t) ^ 3) 0 x) `mod` 2 == 0
+           then reverse x
+           else drop 1 x ++ [head x]
 
+-- Fold an array
+-- http://www.codewars.com/kata/fold-an-array
 
+f :: [Int] -> [Int]
+f xs = let t = length xs
+           y = if odd t then take ((t `div` 2) + 1) xs ++ [0] ++ drop ((t `div` 2) + 1) xs else xs
+       in zipWith (+) y (reverse (drop ((length y) `div`  2) y))
 
-
+foldList :: [Int] -> Int -> [Int]
+foldList xs 0 = xs
+foldList xs n = foldList (f xs) (n-1)
 
