@@ -1,6 +1,5 @@
 
 module           Src.Lib.General where
-import           Control.Monad
 import           Data.List
 import           Data.Char
 
@@ -121,7 +120,7 @@ buildTower n = buildT n 1
 
 buildT :: Int -> Int -> [String]
 buildT n x | n <= 0 = []
-           | otherwise = [take (n-1) (cycle " ") ++ take x (cycle "*") ++ take (n-1) (cycle " ")] ++ buildT (n-1) (x+2)
+           | otherwise = (take (n - 1) (cycle " ") ++ take x (cycle "*") ++ take (n - 1) (cycle " ")) : buildT (n - 1) (x + 2)
 
 -- Highest and Lowest
 -- In this little assignment you are given a string of space separated numbers, and have to return the highest and lowest number.
@@ -129,4 +128,24 @@ buildT n x | n <= 0 = []
 highAndLow :: String -> String
 highAndLow input = show (last (sortStrList input)) ++ " " ++ show (head (sortStrList input)) 
 
+sortStrList :: String -> [Int]
 sortStrList xs = sort (map (\x -> read x :: Int) (words xs))
+
+-- Make a function that does arithmetic!
+-- Given two numbers and an arithmetic operator (the name of it, as a string), return the result of the two numbers having that operator used on them.
+
+data Operation = Add | Divide | Multiply | Subtract deriving (Eq, Show, Enum, Bounded)
+
+arithmetic :: Fractional a => a -> a -> Operation -> a
+arithmetic a b Add = a + b
+arithmetic a b Divide = a / b
+arithmetic a b Multiply = a * b
+arithmetic a b Subtract = a - b
+
+
+
+
+
+
+
+
