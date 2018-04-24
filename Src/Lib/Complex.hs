@@ -1,6 +1,5 @@
 --Implementing complex numbers
-
-module Complex where
+module Src.Lib.Complex where
 data Complex a = Complex a a
   deriving (Eq, Show)
 

@@ -1,0 +1,2 @@
+:l Src/Lib.hs
+:set prompt ">> "

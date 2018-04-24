@@ -1,3 +1,5 @@
+
+module           Src.Lib.General where
 import           Control.Monad
 import           Data.List
 import           Data.Char
@@ -109,3 +111,22 @@ convertFracs list = let den = unzip list
 
 llcm :: Integral a => [a] -> a
 llcm = foldr lcm 1 
+
+-- Build Tower
+-- number of floors (integer and always greater than 0).
+-- Tower block is represented as *
+
+buildTower :: Int -> [String]
+buildTower n = buildT n 1 
+
+buildT :: Int -> Int -> [String]
+buildT n x | n <= 0 = []
+           | otherwise = [take (n-1) (cycle " ") ++ take x (cycle "*") ++ take (n-1) (cycle " ")] ++ buildT (n-1) (x+2)
+
+-- Highest and Lowest
+-- In this little assignment you are given a string of space separated numbers, and have to return the highest and lowest number.
+
+highAndLow :: String -> String
+highAndLow input = show (last (sortStrList input)) ++ " " ++ show (head (sortStrList input)) 
+
+sortStrList xs = sort (map (\x -> read x :: Int) (words xs))
