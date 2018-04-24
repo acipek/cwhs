@@ -171,3 +171,15 @@ foldList :: [Int] -> Int -> [Int]
 foldList xs 0 = xs
 foldList xs n = foldList (f xs) (n-1)
 
+-- Begin your day with a challenge, but an easy one.
+
+oneTwoThree :: Integer -> [Integer]
+oneTwoThree 0 = [0,0]
+oneTwoThree n = toInt (calc n) : [toInt (take (fromInteger n) (repeat 1)) :: Integer]
+
+
+calc n | n < 10 = [n]
+       | otherwise = 9 : calc (n-9) 
+       
+toInt xs = (read . concatMap show) xs :: Integer
+
