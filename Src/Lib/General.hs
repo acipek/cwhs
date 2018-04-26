@@ -206,3 +206,19 @@ checkerboard n | n <= 0 = ""
                | n == 1 = "[r]\n"
                | even n = concat (replicate (n `div` 2) (concat (replicate (n `div` 2) "[r][b]")++"\n" ++ (concat (replicate (n `div` 2) "[b][r]")++"\n")))
                | odd n = concat (replicate (n `div` 2) (concat (replicate (n `div` 2) "[r][b]")++"[r]\n" ++ (concat (replicate (n `div` 2) "[b][r]")++"[b]\n")) ++ [(concat (replicate (n `div` 2) "[r][b]") ++ "[r]\n")])
+
+
+-- Collatz
+-- A collatz sequence, starting with a positive integern, is found by repeatedly applying the following function to n until n == 1 :
+-- n = { n / 2 for even n ;
+--      3n + 1 for odd n }
+--
+-- Create a function collatz that returns a collatz sequence string starting with the positive integer argument passed into the function, in the following form: "X0->X1->...->XN"
+
+collatz :: Int -> String
+collatz = intercalate "->" . map show . collatzHelper
+
+collatzHelper :: Int -> [Int]
+collatzHelper n | n == 1 = [n]
+                | even n = n : collatzHelper (n `div` 2)
+                | odd n = n : collatzHelper (3*n + 1)
