@@ -51,13 +51,13 @@ race v1 v2 g
 --  s = "abcd\nefgh\nijkl\nmnop" -->
 --    "abcd|aeim\nefgh|bfjn\nijkl|cgko\nmnop|dhlp"
 
-diag1Sym :: [Char] -> [Char]
+diag1Sym :: String -> String
 diag1Sym = intercalate "\n" . transpose . lines
 
-rot90Clock :: [Char] -> [Char]
+rot90Clock :: String -> String
 rot90Clock = intercalate "\n" . map reverse . transpose . lines
 
-selfieAndDiag1 :: [Char] -> [Char]
+selfieAndDiag1 :: String -> String
 selfieAndDiag1 strng = intercalate "\n" (zipWith (\a b -> a ++ "|" ++ b) (lines strng) (lines (diag1Sym strng)))
 
 -- Hyper Sphere
@@ -82,14 +82,14 @@ interpreter tape = tick' tape [(0,0)] 0
 
 tick' :: String -> [(Int, Int)] -> Int -> String
 tick' [] _ _ = []
-tick' tape@(x:xs) selector a | x == '+' = if (snd t) == 255
+tick' (x:xs) selector a | x == '+' = if snd t == 255
                                           then tick' xs (changeSpec selector a 0) a
-                                          else tick' xs (changeSpec selector a ((snd t) + 1)) a
+                                          else tick' xs (changeSpec selector a (snd t + 1)) a
                              | x == '*' = chr (snd t) : tick' xs selector a
                              | x == '>' = tick' xs (selector ++ [(a+1, 0)]) (a+1)
                              | x == '<' = tick' xs selector (a-1)
                              | otherwise = tick' xs selector a
-                               where t = if (filter ((==a) . fst) selector) /= [] then head (filter ((==a) . fst) selector) else (0,0)
+                               where t = if any ((== a) . fst) selector then head (filter ((==a) . fst) selector) else (0,0)
 
 changeSpec :: [(Int,Int)] -> Int -> Int -> [(Int,Int)]
 changeSpec xs n x = take n xs ++ [(n,x)] ++ drop (n + 1) xs
@@ -147,15 +147,15 @@ arithmetic a b Subtract = a - b
 
 -- If a chunk represents an integer such as the sum of the cubes of its digits is divisible by 2, reverse that chunk; otherwise rotate it to the left by one position. Put together these modified chunks and return the result as a string.
 
-revRot :: [Char] -> Int -> [Char]
+revRot :: String -> Int -> String
 revRot strng sz | sz <= 0 = ""
                 | strng == "" = ""
                 | sz > length strng = ""
                 | otherwise = helper (take sz strng) ++ revRot (drop sz strng) sz
 
 
-helper :: [Char] -> [Char]
-helper x = if (foldr (\t acc -> acc + (digitToInt t) ^ 3) 0 x) `mod` 2 == 0
+helper :: String -> String
+helper x = if foldr ((+) . (^ 3) . digitToInt) 0 x `mod` 2 == 0
            then reverse x
            else drop 1 x ++ [head x]
 
@@ -165,7 +165,7 @@ helper x = if (foldr (\t acc -> acc + (digitToInt t) ^ 3) 0 x) `mod` 2 == 0
 f :: [Int] -> [Int]
 f xs = let t = length xs
            y = if odd t then take ((t `div` 2) + 1) xs ++ [0] ++ drop ((t `div` 2) + 1) xs else xs
-       in zipWith (+) y (reverse (drop ((length y) `div`  2) y))
+       in zipWith (+) y (reverse (drop (length y `div`  2) y))
 
 foldList :: [Int] -> Int -> [Int]
 foldList xs 0 = xs
@@ -175,22 +175,34 @@ foldList xs n = foldList (f xs) (n-1)
 
 oneTwoThree :: Integer -> [Integer]
 oneTwoThree 0 = [0,0]
-oneTwoThree n = toInt (calc n) : [toInt (take (fromInteger n) (repeat 1)) :: Integer]
+oneTwoThree n = toInt (calc n) : [toInt (replicate (fromInteger n) 1) :: Integer]
 
-
+calc :: (Num t, Ord t) => t -> [t]
 calc n | n < 10 = [n]
-       | otherwise = 9 : calc (n-9) 
-       
+       | otherwise = 9 : calc (n-9)
+ 
+toInt :: (Show a, Foldable t) => t a -> Integer       
 toInt xs = (read . concatMap show) xs :: Integer
 
 -- Roman Numerals Encoder
 -- Create a function taking a positive integer as its parameter and returning a string containing the Roman Numeral representation of that integer.
 
+romans :: [(Integer, String)]
 romans = [(1, "I"), (4, "IV"), (5, "V"), (9, "IX"), (10, "X"), (40, "XL"), (50, "L"), (90, "XC"), (100, "C"), (400, "CD"), (500, "D"), (900, "CM"), (1000, "M")]
 
 solution :: Integer -> String
 solution 0 = []
 solution n | n `elem` map fst romans = snd (head (filter ((==n) . fst) romans))
            | otherwise = snd (toRoman n) ++ solution (n - fst (toRoman n))
-           
+
+toRoman :: Integer -> (Integer, String)           
 toRoman n = romans !! last (findIndices (<n) (map fst romans))
+
+-- Checkerboard Generation
+-- Write a method checkerboard/Checkerboard which takes an integer size and returns a checkerboard of dimensions size x size. There are two colored squares on the checkerboard. Red squares are represented by the string [r] and black squares are represented by the string [b]. You MUST use the newline character \n to insert a newline at the end of each row.
+
+checkerboard :: Int -> String
+checkerboard n | n <= 0 = ""
+               | n == 1 = "[r]\n"
+               | even n = concat (replicate (n `div` 2) (concat (replicate (n `div` 2) "[r][b]")++"\n" ++ (concat (replicate (n `div` 2) "[b][r]")++"\n")))
+               | odd n = concat (replicate (n `div` 2) (concat (replicate (n `div` 2) "[r][b]")++"[r]\n" ++ (concat (replicate (n `div` 2) "[b][r]")++"[b]\n")) ++ [(concat (replicate (n `div` 2) "[r][b]") ++ "[r]\n")])
