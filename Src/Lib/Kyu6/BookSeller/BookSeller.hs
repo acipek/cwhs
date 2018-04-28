@@ -1,4 +1,4 @@
-module Src.Lib.BookSeller where
+module Src.Lib.Kyu6.BookSeller.BookSeller(stocklist, Stock) where
 
 data Stock =
   Stock String

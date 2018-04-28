@@ -1,5 +1,5 @@
 --Implementing complex numbers
-module Src.Lib.Complex where
+module Src.Lib.Kyu5.Complex.Complex where
 
 data Complex a =
   Complex a
