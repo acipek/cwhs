@@ -222,3 +222,15 @@ collatzHelper :: Int -> [Int]
 collatzHelper n | n == 1 = [n]
                 | even n = n : collatzHelper (n `div` 2)
                 | odd n = n : collatzHelper (3*n + 1)
+-- Valid Braces
+-- Write a function that takes a string of braces, and determines if the order of the braces is valid. It should return true if the string is valid, and false if it's invalid.
+
+validBraces :: String -> Bool
+validBraces xs = br xs []
+
+br :: String -> String -> Bool
+br [] _ = True 
+br braces open | (head braces) `elem` "({[" = br (tail braces) (head braces:open)
+               | head braces == ')' = if open /= [] && head open == '(' then br (tail braces) (tail open) else False
+               | head braces == ']' = if open /= [] && head open == '[' then br (tail braces) (tail open) else False
+               | head braces == '}' = if open /= [] && head open == '{' then br (tail braces) (tail open) else False
