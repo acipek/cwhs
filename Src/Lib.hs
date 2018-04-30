@@ -1,5 +1,6 @@
 module Lib where
 
+import           Src.Lib.Kyu4.RomanNumeralsDecoder.RomanNumeralsDecoder
 import           Src.Lib.Kyu4.RomanNumeralsEncoder.RomanNumeralsEncoder
 import           Src.Lib.Kyu4.ValidBraces.ValidBraces
 import           Src.Lib.Kyu5.CommonDenominators.CommonDenominators
