@@ -1,4 +1,4 @@
-module Src.Lib.Kyu4.PascalsTriangle.PascalsTriangle where
+module Src.Lib.Kyu4.PascalsTriangle.PascalsTriangle(pascalsTriangle) where
 
 pascalsTriangle :: Int -> [Int]
 pascalsTriangle 1 = [1]
