@@ -8,6 +8,7 @@ import           Src.Lib.Kyu5.CommonDenominators.CommonDenominators
 import           Src.Lib.Kyu5.Complex.Complex
 import           Src.Lib.Kyu5.IntegersRecreationOne.IntegersRecreationOne
 import           Src.Lib.Kyu5.WeightForWeight.WeightForWeight
+import           Src.Lib.Kyu5.WhereMyAnagramsAt.WhereMyAnagramsAt
 import           Src.Lib.Kyu6.BookSeller.BookSeller
 import           Src.Lib.Kyu6.BuildTower.BuildTower
 import           Src.Lib.Kyu6.CheckerboardGeneration.CheckerboardGeneration
